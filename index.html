@@ -3,532 +3,522 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXORA ZENTIQ | Security Intelligence</title>
+<title>NEXORA ZENTIQ</title>
 
 <style>
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
 }
 
 body {
-  background: #080f1e;
-  color: #edf3ff;
-  font-family: Arial, sans-serif;
+    background: #07111f;
+    color: white;
 }
 
-header {
-  background: #101c32;
-  padding: 20px;
-  border-bottom: 1px solid #263955;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.sidebar {
+    width: 250px;
+    background: #0b192b;
+    position: fixed;
+    height: 100vh;
+    padding: 25px 15px;
+    overflow-y: auto;
+    border-right: 1px solid #1d3552;
 }
 
 .logo {
-  font-size: 25px;
-  font-weight: bold;
-  letter-spacing: 3px;
-  color: #48a5ff;
+    font-size: 23px;
+    font-weight: bold;
+    color: #36a9ff;
 }
 
-.logo small {
-  display: block;
-  font-size: 9px;
-  color: #91a5c3;
-  letter-spacing: 2px;
-  margin-top: 5px;
+.brand {
+    font-size: 10px;
+    color: #8ca6c3;
+    margin: 8px 0 30px;
+    letter-spacing: 2px;
 }
 
-.badge {
-  color: #ffbd60;
-  background: #382b19;
-  padding: 8px 12px;
-  border-radius: 20px;
-  font-size: 10px;
+.sidebar h4 {
+    color: #607d9d;
+    font-size: 11px;
+    margin: 20px 10px;
 }
 
-.container {
-  display: flex;
-  min-height: calc(100vh - 75px);
+.sidebar button {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    margin-bottom: 7px;
+    background: transparent;
+    border: none;
+    color: #a9bfd8;
+    text-align: left;
+    border-radius: 7px;
+    cursor: pointer;
 }
 
-nav {
-  width: 230px;
-  background: #0d182b;
-  padding: 20px 12px;
-  border-right: 1px solid #263955;
-  flex-shrink: 0;
+.sidebar button:hover {
+    background: #12365b;
+    color: #36a9ff;
 }
 
-nav p {
-  color: #667e9e;
-  font-size: 10px;
-  padding: 10px;
-  letter-spacing: 2px;
+.main {
+    margin-left: 250px;
+    padding: 30px;
 }
 
-nav button {
-  width: 100%;
-  background: transparent;
-  border: none;
-  color: #a8b8d0;
-  padding: 14px 10px;
-  text-align: left;
-  cursor: pointer;
-  border-radius: 7px;
-  margin-bottom: 4px;
-  font-size: 13px;
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
-nav button:hover,
-nav button.active {
-  background: #16345a;
-  color: #51aaff;
+.topbar h1 {
+    font-size: 25px;
 }
 
-main {
-  flex: 1;
-  padding: 25px;
-  min-width: 0;
+.status {
+    background: #10372f;
+    color: #38d99b;
+    padding: 9px 13px;
+    border-radius: 20px;
+    font-size: 12px;
 }
 
-h1 {
-  font-size: 25px;
-  margin-bottom: 8px;
+.welcome {
+    background: linear-gradient(120deg, #10345b, #10243c);
+    border: 1px solid #1d4c78;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
 }
 
-.subtitle {
-  color: #91a5c3;
-  font-size: 12px;
-  margin-bottom: 22px;
-  line-height: 1.6;
+.welcome h2 {
+    margin-bottom: 10px;
 }
 
-.notice {
-  background: #382b19;
-  border: 1px solid #72562b;
-  color: #ffd083;
-  padding: 13px;
-  font-size: 12px;
-  border-radius: 8px;
-  margin-bottom: 20px;
+.welcome p {
+    color: #b0c7df;
+    line-height: 1.6;
+    font-size: 13px;
 }
 
-.cards {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 13px;
-  margin-bottom: 22px;
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
 }
 
-.card {
-  background: #111e33;
-  border: 1px solid #273c5b;
-  padding: 20px;
-  border-radius: 10px;
+.card, .section {
+    background: #0d1d30;
+    border: 1px solid #1b3552;
+    padding: 20px;
+    border-radius: 10px;
 }
 
-.card span {
-  color: #91a5c3;
-  font-size: 11px;
+.card p {
+    color: #8ca6c3;
+    font-size: 12px;
+    margin-bottom: 12px;
 }
 
 .card h2 {
-  margin-top: 13px;
-  font-size: 28px;
+    color: #36a9ff;
+    font-size: 28px;
 }
 
-.red { color: #ff647b; }
-.orange { color: #ffb35e; }
-.blue { color: #48a5ff; }
-.green { color: #43d5a0; }
-
-.panel {
-  background: #111e33;
-  border: 1px solid #273c5b;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
+.section {
+    margin-bottom: 25px;
 }
 
-.panel h3 {
-  font-size: 15px;
-  margin-bottom: 15px;
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 430px;
+.primary-btn {
+    background: #1688e8;
+    color: white;
+    border: none;
+    padding: 11px 15px;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
-.table-container {
-  overflow-x: auto;
+.event {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 14px 0;
+    border-bottom: 1px solid #1b3552;
+    font-size: 12px;
 }
 
-th, td {
-  text-align: left;
-  padding: 14px 8px;
-  border-bottom: 1px solid #273c5b;
-  font-size: 11px;
+.event:last-child {
+    border-bottom: none;
 }
 
-th {
-  color: #7187a7;
+.event small {
+    display: block;
+    color: #8ca6c3;
+    margin-top: 5px;
 }
 
-td {
-  color: #c0cee1;
+.badge {
+    padding: 6px 9px;
+    border-radius: 5px;
+    font-size: 10px;
+    height: fit-content;
 }
 
-.risk {
-  font-size: 9px;
-  padding: 5px 8px;
-  border-radius: 5px;
+.high {
+    color: #ff7777;
+    background: #472222;
 }
 
-.HIGH, .CRITICAL {
-  background: #48232d;
-  color: #ff7386;
+.medium {
+    color: #ffcf70;
+    background: #44351c;
 }
 
-.MEDIUM {
-  background: #46351e;
-  color: #ffc36b;
-}
-
-.LOW {
-  background: #193a34;
-  color: #55dbad;
-}
-
-.action {
-  background: #087cff;
-  color: white;
-  border: none;
-  padding: 12px 17px;
-  border-radius: 7px;
-  cursor: pointer;
-  margin-top: 15px;
-}
-
-.action:hover {
-  background: #0063d1;
+.low {
+    color: #42dfa5;
+    background: #153d31;
 }
 
 .modules {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
 }
 
 .module {
-  background: #172943;
-  padding: 18px;
-  border: 1px solid #2a4263;
-  border-radius: 8px;
+    background: #10243a;
+    border: 1px solid #1b4165;
+    padding: 20px;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.module:hover {
+    border-color: #36a9ff;
+    transform: translateY(-3px);
 }
 
 .module h4 {
-  color: #54aaff;
-  margin-bottom: 8px;
-  font-size: 13px;
+    color: #36a9ff;
+    margin-bottom: 10px;
 }
 
 .module p {
-  color: #91a5c3;
-  font-size: 11px;
-  line-height: 1.5;
+    color: #91a9c4;
+    font-size: 12px;
+    line-height: 1.5;
 }
 
-footer {
-  text-align: center;
-  color: #627895;
-  font-size: 10px;
-  padding: 25px;
+.notice {
+    color: #8ca6c3;
+    font-size: 11px;
+    text-align: center;
+    line-height: 1.6;
+    margin-top: 30px;
 }
 
-.hidden {
-  display: none;
+@media(max-width: 950px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .modules {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-@media(max-width: 800px) {
-  .container {
-    display: block;
-  }
+@media(max-width: 650px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
 
-  nav {
-    width: 100%;
-    display: flex;
-    overflow-x: auto;
-    gap: 5px;
-    padding: 10px;
-  }
+    .sidebar button {
+        display: inline-block;
+        width: auto;
+        padding: 10px;
+    }
 
-  nav p {
-    display: none;
-  }
+    .sidebar h4 {
+        display: none;
+    }
 
-  nav button {
-    min-width: max-content;
-    width: auto;
-    margin: 0;
-  }
+    .main {
+        margin-left: 0;
+        padding: 18px;
+    }
 
-  main {
-    padding: 16px;
-  }
-
-  .cards {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .modules {
-    grid-template-columns: repeat(2, 1fr);
-  }
+    .modules {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo">
-    ZENTIQ
-    <small>BY NEXORA TECHNOLOGIES</small>
-  </div>
-  <div class="badge">● DEMO MODE</div>
-</header>
+<aside class="sidebar">
 
-<div class="container">
+    <div class="logo">NEXORA ZENTIQ</div>
+    <div class="brand">BY NEXORA TECHNOLOGIES</div>
 
-<nav>
-  <p>PLATFORM</p>
-  <button class="active" onclick="showPage('Overview',this)">◈ Overview</button>
-  <button onclick="showPage('Fraud Detection',this)">◎ Fraud Detection</button>
-  <button onclick="showPage('Vulnerability',this)">⬡ Vulnerability</button>
-  <button onclick="showPage('Threat Intelligence',this)">◉ Threat Intelligence</button>
-  <button onclick="showPage('Network Security',this)">⌘ Network Security</button>
-  <button onclick="showPage('Cloud Security',this)">☁ Cloud Security</button>
-  <button onclick="showPage('Identity Protection',this)">♙ Identity Protection</button>
-  <button onclick="showPage('Insider Threat',this)">◌ Insider Threat</button>
-  <button onclick="showPage('Incident Response',this)">⚡ Incident Response</button>
-  <button onclick="showPage('Reports',this)">▤ Reports</button>
-</nav>
+    <h4>MAIN MENU</h4>
 
-<main>
+    <button onclick="goHome()">◈ Overview</button>
 
-<section id="dashboard">
+    <button onclick="openFraud()">◎ Fraud Detection</button>
 
-<h1 id="page-title">Security Overview</h1>
+    <button onclick="showNotice('Vulnerability Management')">◉ Vulnerability</button>
 
-<p class="subtitle">
-Intelligence Without Boundaries.<br>
-Your central security intelligence dashboard.
-</p>
+    <button onclick="showNotice('Threat Intelligence')">◈ Threat Intelligence</button>
 
-<div class="notice">
-⚠ Demonstration environment. All events and statistics displayed are simulated.
-</div>
+    <button onclick="showNotice('Network Security')">◉ Network Security</button>
 
-<div class="cards">
+    <button onclick="showNotice('Cloud Security')">☁ Cloud Security</button>
 
-<div class="card">
-<span>Total Events</span>
-<h2 class="blue" id="total">128</h2>
-</div>
+    <button onclick="showNotice('Identity Protection')">◈ Identity Protection</button>
 
-<div class="card">
-<span>High Risk Alerts</span>
-<h2 class="red" id="alerts">08</h2>
-</div>
+    <button onclick="showNotice('Insider Threat')">◉ Insider Threat</button>
 
-<div class="card">
-<span>Vulnerabilities</span>
-<h2 class="orange">14</h2>
-</div>
+    <button onclick="showNotice('Incident Response')">◈ Incident Response</button>
 
-<div class="card">
-<span>Incidents</span>
-<h2 class="green">06</h2>
-</div>
+    <button onclick="showNotice('Reports')">▤ Reports</button>
 
-</div>
+</aside>
 
-<div class="panel">
-<h3>Security Event Monitor</h3>
+<main class="main">
 
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>EVENT</th>
-<th>CATEGORY</th>
-<th>RISK</th>
-<th>STATUS</th>
-</tr>
-</thead>
+    <div class="topbar">
+        <h1>Security Overview</h1>
+        <div class="status">● Prototype Online</div>
+    </div>
 
-<tbody id="events">
-<tr>
-<td>Unusual transaction</td>
-<td>Fraud</td>
-<td><span class="risk HIGH">HIGH</span></td>
-<td>Under review</td>
-</tr>
+    <div class="welcome">
+        <h2>Welcome to ZENTIQ Intelligence</h2>
+        <p>
+            An experimental security intelligence platform
+            developed by Nexora Technologies. Our vision is
+            to bring fraud intelligence, cybersecurity monitoring
+            and risk management into one platform.
+        </p>
+    </div>
 
-<tr>
-<td>Outdated component</td>
-<td>Vulnerability</td>
-<td><span class="risk MEDIUM">MEDIUM</span></td>
-<td>Open</td>
-</tr>
+    <div class="stats">
 
-<tr>
-<td>Suspicious login</td>
-<td>Identity</td>
-<td><span class="risk CRITICAL">CRITICAL</span></td>
-<td>Investigating</td>
-</tr>
+        <div class="card">
+            <p>Security Events</p>
+            <h2 id="events">128</h2>
+        </div>
 
-<tr>
-<td>Unusual network traffic</td>
-<td>Network</td>
-<td><span class="risk LOW">LOW</span></td>
-<td>Monitored</td>
-</tr>
-</tbody>
-</table>
-</div>
+        <div class="card">
+            <p>High-Risk Alerts</p>
+            <h2 id="alerts">8</h2>
+        </div>
 
-<button class="action" onclick="addEvent()">
-+ Simulate Security Event
-</button>
+        <div class="card">
+            <p>Vulnerabilities</p>
+            <h2>14</h2>
+        </div>
 
-</div>
+        <div class="card">
+            <p>Incidents</p>
+            <h2>6</h2>
+        </div>
 
-<div class="panel">
-<h3>ZENTIQ Intelligence Modules</h3>
+    </div>
 
-<div class="modules">
+    <div class="section">
 
-<div class="module">
-<h4>◎ Fraud Detection</h4>
-<p>Financial fraud monitoring and risk assessment.</p>
-</div>
+        <div class="section-header">
+            <h3>Security Event Monitor</h3>
 
-<div class="module">
-<h4>⬡ Vulnerability</h4>
-<p>Security weakness identification and management.</p>
-</div>
+            <button class="primary-btn" onclick="simulateEvent()">
+                + Simulate Security Event
+            </button>
+        </div>
 
-<div class="module">
-<h4>◉ Threat Intelligence</h4>
-<p>Threat analysis and intelligence management.</p>
-</div>
+        <div id="eventList">
 
-<div class="module">
-<h4>⌘ Network Security</h4>
-<p>Network security monitoring.</p>
-</div>
+            <div class="event">
+                <div>
+                    Suspicious Login Attempt
+                    <small>Authentication monitoring · Sample event</small>
+                </div>
+                <span class="badge high">HIGH</span>
+            </div>
 
-<div class="module">
-<h4>☁ Cloud Security</h4>
-<p>Cloud environment security management.</p>
-</div>
+            <div class="event">
+                <div>
+                    Unusual Network Activity
+                    <small>Network monitoring · Sample event</small>
+                </div>
+                <span class="badge medium">MEDIUM</span>
+            </div>
 
-<div class="module">
-<h4>♙ Identity Protection</h4>
-<p>Identity and access risk monitoring.</p>
-</div>
+            <div class="event">
+                <div>
+                    Normal System Activity
+                    <small>System monitoring · Sample event</small>
+                </div>
+                <span class="badge low">LOW</span>
+            </div>
 
-<div class="module">
-<h4>◌ Insider Threat</h4>
-<p>Internal security risk monitoring.</p>
-</div>
+        </div>
 
-<div class="module">
-<h4>⚡ Incident Response</h4>
-<p>Security incident investigation.</p>
-</div>
+    </div>
 
-<div class="module">
-<h4>▤ Intelligence Reports</h4>
-<p>Security findings and reporting.</p>
-</div>
+    <div class="section">
 
-</div>
-</div>
+        <div class="section-header">
+            <h3>ZENTIQ Security Modules</h3>
+        </div>
 
-</section>
+        <div class="modules">
 
-<footer>
-NEXORA TECHNOLOGIES © 2026<br>
-ZENTIQ — INTELLIGENCE WITHOUT BOUNDARIES
-</footer>
+            <div class="module" onclick="openFraud()">
+                <h4>◎ Fraud Detection</h4>
+                <p>Experimental transaction risk scoring using configurable rules.</p>
+            </div>
+
+            <div class="module" onclick="showNotice('Vulnerability Management')">
+                <h4>◉ Vulnerability Management</h4>
+                <p>Planned vulnerability tracking and remediation management.</p>
+            </div>
+
+            <div class="module" onclick="showNotice('Threat Intelligence')">
+                <h4>◈ Threat Intelligence</h4>
+                <p>Planned threat information and intelligence analysis.</p>
+            </div>
+
+            <div class="module" onclick="showNotice('Network Security')">
+                <h4>◉ Network Security</h4>
+                <p>Planned network security monitoring and risk analysis.</p>
+            </div>
+
+            <div class="module" onclick="showNotice('Cloud Security')">
+                <h4>☁ Cloud Security</h4>
+                <p>Planned cloud configuration and security assessment tools.</p>
+            </div>
+
+            <div class="module" onclick="showNotice('Identity Protection')">
+                <h4>◈ Identity Protection</h4>
+                <p>Planned identity and access protection capabilities.</p>
+            </div>
+
+            <div class="module" onclick="showNotice('Insider Threat')">
+                <h4>◉ Insider Threat</h4>
+                <p>Planned monitoring of suspicious internal activity.</p>
+            </div>
+
+            <div class="module" onclick="showNotice('Incident Response')">
+                <h4>◈ Incident Response</h4>
+                <p>Planned security incident investigation and response workflows.</p>
+            </div>
+
+            <div class="module" onclick="showNotice('Reports')">
+                <h4>▤ Intelligence Reports</h4>
+                <p>Planned security analytics and reporting capabilities.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="notice">
+        NEXORA ZENTIQ — Intelligence Without Boundaries.<br>
+        Experimental prototype. Events and statistics are simulated.
+        This is not live security monitoring.
+    </div>
 
 </main>
-</div>
 
 <script>
 
-let totalEvents = 128;
-let alerts = 8;
-
-function showPage(page, button) {
-
-document.getElementById("page-title").textContent =
-page === "Overview" ? "Security Overview" : page;
-
-document.querySelectorAll("nav button").forEach(btn => {
-btn.classList.remove("active");
-});
-
-button.classList.add("active");
-
+function openFraud() {
+    window.location.href = "fraud.html";
 }
 
-function addEvent() {
-
-const demoEvents = [
-["Suspicious payment activity","Fraud","HIGH"],
-["Unusual login attempt","Identity","CRITICAL"],
-["Outdated server component","Vulnerability","MEDIUM"],
-["Unexpected network traffic","Network","LOW"],
-["Suspicious cloud activity","Cloud","HIGH"]
-];
-
-const event =
-demoEvents[Math.floor(Math.random() * demoEvents.length)];
-
-const row = document.createElement("tr");
-
-row.innerHTML = `
-<td>${event[0]}</td>
-<td>${event[1]}</td>
-<td><span class="risk ${event[2]}">${event[2]}</span></td>
-<td>Demo event</td>
-`;
-
-document.getElementById("events").prepend(row);
-
-totalEvents++;
-
-document.getElementById("total").textContent = totalEvents;
-
-if(event[2] === "HIGH" || event[2] === "CRITICAL") {
-alerts++;
-document.getElementById("alerts").textContent = alerts;
+function goHome() {
+    window.location.href = "index.html";
 }
 
-alert("Simulated " + event[2] + " risk event added.");
+function showNotice(moduleName) {
+    alert(moduleName + " is planned for a future ZENTIQ development stage.");
+}
 
+function simulateEvent() {
+
+    const events = [
+        {
+            name: "Suspicious Login Attempt",
+            level: "HIGH"
+        },
+        {
+            name: "Unusual Network Activity",
+            level: "MEDIUM"
+        },
+        {
+            name: "Normal System Activity",
+            level: "LOW"
+        },
+        {
+            name: "Multiple Failed Login Attempts",
+            level: "HIGH"
+        }
+    ];
+
+    const selected = events[Math.floor(Math.random() * events.length)];
+
+    const event = document.createElement("div");
+    event.className = "event";
+
+    const details = document.createElement("div");
+    details.textContent = selected.name;
+
+    const description = document.createElement("small");
+    description.textContent = "Simulated security event";
+
+    details.appendChild(description);
+
+    const badge = document.createElement("span");
+    badge.className = "badge " + selected.level.toLowerCase();
+    badge.textContent = selected.level;
+
+    event.appendChild(details);
+    event.appendChild(badge);
+
+    document.getElementById("eventList").prepend(event);
+
+    const counter = document.getElementById("events");
+    counter.textContent = Number(counter.textContent) + 1;
+
+    if (selected.level === "HIGH") {
+        const alerts = document.getElementById("alerts");
+        alerts.textContent = Number(alerts.textContent) + 1;
+    }
 }
 
 </script>
 
 </body>
-  </html>
+      </html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZENTIQ Fraud Detection</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;padding:20px;
+ background:#080f1e;color:#edf3ff;
+ font-family:Arial,sans-serif
+}
+.container{max-width:750px;margin:auto}
+header{margin-bottom:25px}
+.logo{color:#48a5ff;font-size:27px;font-weight:bold;letter-spacing:3px}
+.subtitle{color:#91a5c3;font-size:12px}
+.panel{
+ background:#111e33;border:1px solid #273c5b;
+ border-radius:12px;padding:22px;margin-bottom:20px
+}
+h2{font-size:19px}
+label{display:block;color:#a9bad2;font-size:13px;margin:17px 0 8px}
+input,select{
+ width:100%;padding:13px;border-radius:7px;
+ background:#0a1425;border:1px solid #304663;
+ color:white;font-size:15px
+}
+button{
+ width:100%;padding:14px;background:#087cff;
+ border:0;border-radius:7px;color:white;
+ font-weight:bold;margin-top:20px;font-size:15px
+}
+button:active{background:#005ac0}
+.result{
+ display:none;margin-top:20px;padding:18px;
+ border-radius:9px;background:#0a1729;
+ border:1px solid #304663
+}
+.score{font-size:35px;font-weight:bold;margin:12px 0}
+.low{color:#43d5a0}
+.medium{color:#ffbd60}
+.high{color:#ff8a60}
+.critical{color:#ff647b}
+.reason{color:#b6c8df;font-size:13px;line-height:1.8}
+.warning{color:#ffbd60;font-size:11px;line-height:1.6}
+footer{text-align:center;color:#7184a4;font-size:10px;margin-top:30px}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+ <div class="logo">ZENTIQ</div>
+ <div class="subtitle">BY NEXORA TECHNOLOGIES</div>
+ <p>INTELLIGENCE WITHOUT BOUNDARIES.</p>
+</header>
+
+<div class="panel">
+ <h2>Financial Fraud Analysis</h2>
+ <p class="subtitle">Analyse a transaction using demonstration risk rules.</p>
+
+ <label>Transaction Amount (₦)</label>
+ <input type="number" id="amount" placeholder="e.g. 500000">
+
+ <label>Usual Transaction Amount (₦)</label>
+ <input type="number" id="usual" placeholder="e.g. 50000">
+
+ <label>Is this a new device?</label>
+ <select id="device">
+  <option value="no">No</option>
+  <option value="yes">Yes</option>
+ </select>
+
+ <label>Is the transaction location unusual?</label>
+ <select id="location">
+  <option value="no">No</option>
+  <option value="yes">Yes</option>
+ </select>
+
+ <label>Has the transaction failed repeatedly?</label>
+ <select id="failed">
+  <option value="no">No</option>
+  <option value="yes">Yes</option>
+ </select>
+
+ <button onclick="analyse()">Analyse Transaction</button>
+
+ <div id="result" class="result">
+  <h2>Analysis Result</h2>
+  <div id="score" class="score"></div>
+  <div id="level"></div>
+  <h3>Reasons identified</h3>
+  <div id="reasons" class="reason"></div>
+ </div>
+</div>
+
+<div class="panel">
+ <h3>About this engine</h3>
+ <p class="warning">
+ This is an experimental, rule-based demonstration.
+ It does not connect to banks, verify transactions,
+ or establish whether fraud has actually occurred.
+ A high score means further investigation may be appropriate.
+ </p>
+</div>
+
+<footer>
+NEXORA TECHNOLOGIES © 2026<br>
+ZENTIQ FRAUD INTELLIGENCE ENGINE
+</footer>
+
+</div>
+
+<script>
+function analyse(){
+
+ const amount = Number(document.getElementById("amount").value);
+ const usual = Number(document.getElementById("usual").value);
+
+ const device = document.getElementById("device").value;
+ const location = document.getElementById("location").value;
+ const failed = document.getElementById("failed").value;
+
+ if(!Number.isFinite(amount) || !Number.isFinite(usual) ||
+    amount <= 0 || usual <= 0){
+  alert("Enter valid transaction amounts greater than zero.");
+  return;
+ }
+
+ let score = 0;
+ let reasons = [];
+
+ if(amount >= usual * 5){
+  score += 35;
+  reasons.push("Transaction is at least five times the usual amount.");
+ }else if(amount >= usual * 2){
+  score += 20;
+  reasons.push("Transaction is at least twice the usual amount.");
+ }
+
+ if(device === "yes"){
+  score += 20;
+  reasons.push("Transaction comes from a new device.");
+ }
+
+ if(location === "yes"){
+  score += 25;
+  reasons.push("Transaction location is unusual.");
+ }
+
+ if(failed === "yes"){
+  score += 20;
+  reasons.push("Repeated failed transaction attempts reported.");
+ }
+
+ score = Math.min(score,100);
+
+ let level;
+ let className;
+
+ if(score >= 75){
+  level = "CRITICAL";
+  className = "critical";
+ }else if(score >= 50){
+  level = "HIGH";
+  className = "high";
+ }else if(score >= 25){
+  level = "MEDIUM";
+  className = "medium";
+ }else{
+  level = "LOW";
+  className = "low";
+ }
+
+ document.getElementById("score").textContent = score + "/100";
+ document.getElementById("score").className = "score " + className;
+
+ document.getElementById("level").innerHTML =
+ "<strong class='" + className + "'>Risk Level: " + level + "</strong>";
+
+ document.getElementById("reasons").innerHTML =
+ reasons.length ? reasons.map(r => "• " + r).join("<br>") :
+ "No unusual patterns were identified by these demonstration rules.";
+
+ document.getElementById("result").style.display = "block";
+}
+</script>
+
+</body>
+  </html>

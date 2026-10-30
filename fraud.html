@@ -3,191 +3,614 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZENTIQ Fraud Detection</title>
+<title>ZENTIQ | Fraud Intelligence</title>
 
 <style>
-*{box-sizing:border-box}
-body{
- margin:0;padding:20px;
- background:#080f1e;color:#edf3ff;
- font-family:Arial,sans-serif
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
 }
-.container{max-width:750px;margin:auto}
-header{margin-bottom:25px}
-.logo{color:#48a5ff;font-size:27px;font-weight:bold;letter-spacing:3px}
-.subtitle{color:#91a5c3;font-size:12px}
-.panel{
- background:#111e33;border:1px solid #273c5b;
- border-radius:12px;padding:22px;margin-bottom:20px
+
+body {
+    background: #07111f;
+    color: white;
+    padding: 20px;
 }
-h2{font-size:19px}
-label{display:block;color:#a9bad2;font-size:13px;margin:17px 0 8px}
-input,select{
- width:100%;padding:13px;border-radius:7px;
- background:#0a1425;border:1px solid #304663;
- color:white;font-size:15px
+
+.container {
+    max-width: 1100px;
+    margin: auto;
 }
-button{
- width:100%;padding:14px;background:#087cff;
- border:0;border-radius:7px;color:white;
- font-weight:bold;margin-top:20px;font-size:15px
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
 }
-button:active{background:#005ac0}
-.result{
- display:none;margin-top:20px;padding:18px;
- border-radius:9px;background:#0a1729;
- border:1px solid #304663
+
+.logo {
+    color: #36a9ff;
+    font-size: 23px;
+    font-weight: bold;
 }
-.score{font-size:35px;font-weight:bold;margin:12px 0}
-.low{color:#43d5a0}
-.medium{color:#ffbd60}
-.high{color:#ff8a60}
-.critical{color:#ff647b}
-.reason{color:#b6c8df;font-size:13px;line-height:1.8}
-.warning{color:#ffbd60;font-size:11px;line-height:1.6}
-footer{text-align:center;color:#7184a4;font-size:10px;margin-top:30px}
+
+.subtitle {
+    color: #8ca6c3;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+.back {
+    background: #12365b;
+    color: #36a9ff;
+    border: 1px solid #1d4c78;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.intro {
+    background: linear-gradient(120deg, #10345b, #10243c);
+    border: 1px solid #1d4c78;
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 22px;
+}
+
+.intro h1 {
+    margin-bottom: 10px;
+    font-size: 22px;
+}
+
+.intro p {
+    color: #b0c7df;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.card, .panel {
+    background: #0d1d30;
+    border: 1px solid #1b3552;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.card p {
+    color: #8ca6c3;
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.card h2 {
+    color: #36a9ff;
+    font-size: 26px;
+}
+
+.panel {
+    margin-bottom: 22px;
+}
+
+.panel h2 {
+    font-size: 17px;
+    margin-bottom: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.field label {
+    display: block;
+    color: #a9bfd8;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+input, select {
+    width: 100%;
+    padding: 13px;
+    background: #07111f;
+    border: 1px solid #284562;
+    border-radius: 6px;
+    color: white;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: #36a9ff;
+}
+
+.analyze {
+    width: 100%;
+    padding: 14px;
+    background: #1688e8;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    margin-top: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.analyze:hover {
+    background: #0870c8;
+}
+
+.result {
+    display: none;
+    background: #10243a;
+    border: 1px solid #28527b;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.result h3 {
+    margin-bottom: 12px;
+}
+
+.score {
+    font-size: 38px;
+    color: #36a9ff;
+    margin: 10px 0;
+}
+
+.reasons {
+    margin-top: 15px;
+    color: #b0c7df;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.history-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 0;
+    border-bottom: 1px solid #1b3552;
+    font-size: 12px;
+}
+
+.history-row:last-child {
+    border-bottom: none;
+}
+
+.history-row small {
+    display: block;
+    color: #8ca6c3;
+    margin-top: 5px;
+}
+
+.badge {
+    padding: 6px 9px;
+    border-radius: 5px;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.critical {
+    color: #ff7777;
+    background: #472222;
+}
+
+.high {
+    color: #ff9a70;
+    background: #462b21;
+}
+
+.medium {
+    color: #ffcf70;
+    background: #44351c;
+}
+
+.low {
+    color: #42dfa5;
+    background: #153d31;
+}
+
+.clear {
+    background: #472222;
+    color: #ff9999;
+    border: none;
+    padding: 9px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.empty {
+    color: #8ca6c3;
+    font-size: 13px;
+    padding: 15px 0;
+}
+
+.notice {
+    text-align: center;
+    color: #8ca6c3;
+    font-size: 11px;
+    line-height: 1.7;
+    margin-top: 25px;
+}
+
+@media(max-width: 700px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
 </style>
 </head>
 
 <body>
+
 <div class="container">
 
-<header>
- <div class="logo">ZENTIQ</div>
- <div class="subtitle">BY NEXORA TECHNOLOGIES</div>
- <p>INTELLIGENCE WITHOUT BOUNDARIES.</p>
-</header>
+    <div class="header">
+        <div>
+            <div class="logo">NEXORA ZENTIQ</div>
+            <div class="subtitle">FRAUD INTELLIGENCE MODULE</div>
+        </div>
 
-<div class="panel">
- <h2>Financial Fraud Analysis</h2>
- <p class="subtitle">Analyse a transaction using demonstration risk rules.</p>
+        <button class="back" onclick="location.href='index.html'">
+            ← Dashboard
+        </button>
+    </div>
 
- <label>Transaction Amount (₦)</label>
- <input type="number" id="amount" placeholder="e.g. 500000">
+    <div class="intro">
+        <h1>Transaction Risk Analysis</h1>
+        <p>
+            Examine sample transaction information using
+            configurable risk rules. ZENTIQ calculates a
+            demonstration risk score and explains the factors
+            that influenced it.
+        </p>
+    </div>
 
- <label>Usual Transaction Amount (₦)</label>
- <input type="number" id="usual" placeholder="e.g. 50000">
+    <div class="stats">
 
- <label>Is this a new device?</label>
- <select id="device">
-  <option value="no">No</option>
-  <option value="yes">Yes</option>
- </select>
+        <div class="card">
+            <p>Transactions Analyzed</p>
+            <h2 id="total">0</h2>
+        </div>
 
- <label>Is the transaction location unusual?</label>
- <select id="location">
-  <option value="no">No</option>
-  <option value="yes">Yes</option>
- </select>
+        <div class="card">
+            <p>Critical Risk</p>
+            <h2 id="critical">0</h2>
+        </div>
 
- <label>Has the transaction failed repeatedly?</label>
- <select id="failed">
-  <option value="no">No</option>
-  <option value="yes">Yes</option>
- </select>
+        <div class="card">
+            <p>High Risk</p>
+            <h2 id="high">0</h2>
+        </div>
 
- <button onclick="analyse()">Analyse Transaction</button>
+        <div class="card">
+            <p>Low Risk</p>
+            <h2 id="low">0</h2>
+        </div>
 
- <div id="result" class="result">
-  <h2>Analysis Result</h2>
-  <div id="score" class="score"></div>
-  <div id="level"></div>
-  <h3>Reasons identified</h3>
-  <div id="reasons" class="reason"></div>
- </div>
-</div>
+    </div>
 
-<div class="panel">
- <h3>About this engine</h3>
- <p class="warning">
- This is an experimental, rule-based demonstration.
- It does not connect to banks, verify transactions,
- or establish whether fraud has actually occurred.
- A high score means further investigation may be appropriate.
- </p>
-</div>
+    <div class="panel">
 
-<footer>
-NEXORA TECHNOLOGIES © 2026<br>
-ZENTIQ FRAUD INTELLIGENCE ENGINE
-</footer>
+        <h2>Analyze a Transaction</h2>
+
+        <form id="fraudForm">
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label>Transaction Amount (₦)</label>
+                    <input
+                        type="number"
+                        id="amount"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="e.g. 50000"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Usual Transaction Amount (₦)</label>
+                    <input
+                        type="number"
+                        id="usual"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="e.g. 10000"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Is this a new device?</label>
+                    <select id="device">
+                        <option value="no">No</option>
+                        <option value="yes">Yes</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Is the location unusual?</label>
+                    <select id="location">
+                        <option value="no">No</option>
+                        <option value="yes">Yes</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Repeated failed transactions?</label>
+                    <select id="failed">
+                        <option value="no">No</option>
+                        <option value="yes">Yes</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button type="submit" class="analyze">
+                ANALYZE TRANSACTION
+            </button>
+
+        </form>
+
+        <div class="result" id="result">
+
+            <h3>Analysis Result</h3>
+
+            <div class="score" id="score">0/100</div>
+
+            <h3 id="risk">LOW RISK</h3>
+
+            <div class="reasons" id="reasons"></div>
+
+        </div>
+
+    </div>
+
+    <div class="panel">
+
+        <div class="section-header">
+            <h2>Transaction History</h2>
+            <button class="clear" onclick="clearHistory()">
+                Clear History
+            </button>
+        </div>
+
+        <div id="history">
+            <div class="empty">No transactions analyzed yet.</div>
+        </div>
+
+    </div>
+
+    <div class="notice">
+        NEXORA ZENTIQ — Intelligence Without Boundaries.<br>
+        Experimental rule-based demonstration only.
+        This module does not connect to banks, verify transactions,
+        or establish whether an actual transaction is fraudulent.
+        Do not enter real financial or personal information.
+    </div>
 
 </div>
 
 <script>
-function analyse(){
 
- const amount = Number(document.getElementById("amount").value);
- const usual = Number(document.getElementById("usual").value);
+const STORAGE_KEY = "zentiq_fraud_demo_history";
 
- const device = document.getElementById("device").value;
- const location = document.getElementById("location").value;
- const failed = document.getElementById("failed").value;
+let history = [];
 
- if(!Number.isFinite(amount) || !Number.isFinite(usual) ||
-    amount <= 0 || usual <= 0){
-  alert("Enter valid transaction amounts greater than zero.");
-  return;
- }
+try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
 
- let score = 0;
- let reasons = [];
-
- if(amount >= usual * 5){
-  score += 35;
-  reasons.push("Transaction is at least five times the usual amount.");
- }else if(amount >= usual * 2){
-  score += 20;
-  reasons.push("Transaction is at least twice the usual amount.");
- }
-
- if(device === "yes"){
-  score += 20;
-  reasons.push("Transaction comes from a new device.");
- }
-
- if(location === "yes"){
-  score += 25;
-  reasons.push("Transaction location is unusual.");
- }
-
- if(failed === "yes"){
-  score += 20;
-  reasons.push("Repeated failed transaction attempts reported.");
- }
-
- score = Math.min(score,100);
-
- let level;
- let className;
-
- if(score >= 75){
-  level = "CRITICAL";
-  className = "critical";
- }else if(score >= 50){
-  level = "HIGH";
-  className = "high";
- }else if(score >= 25){
-  level = "MEDIUM";
-  className = "medium";
- }else{
-  level = "LOW";
-  className = "low";
- }
-
- document.getElementById("score").textContent = score + "/100";
- document.getElementById("score").className = "score " + className;
-
- document.getElementById("level").innerHTML =
- "<strong class='" + className + "'>Risk Level: " + level + "</strong>";
-
- document.getElementById("reasons").innerHTML =
- reasons.length ? reasons.map(r => "• " + r).join("<br>") :
- "No unusual patterns were identified by these demonstration rules.";
-
- document.getElementById("result").style.display = "block";
+    if (Array.isArray(saved)) {
+        history = saved.filter(item =>
+            item &&
+            typeof item.score === "number" &&
+            typeof item.risk === "string" &&
+            typeof item.amount === "number"
+        );
+    }
+} catch (error) {
+    history = [];
 }
+
+function getRisk(score) {
+
+    if (score >= 75) return "CRITICAL";
+    if (score >= 50) return "HIGH";
+    if (score >= 25) return "MEDIUM";
+
+    return "LOW";
+}
+
+function saveHistory() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+    } catch (error) {
+        alert("Browser storage is unavailable. History may not be saved.");
+    }
+}
+
+function updateStats() {
+
+    document.getElementById("total").textContent = history.length;
+
+    document.getElementById("critical").textContent =
+        history.filter(item => item.risk === "CRITICAL").length;
+
+    document.getElementById("high").textContent =
+        history.filter(item => item.risk === "HIGH").length;
+
+    document.getElementById("low").textContent =
+        history.filter(item => item.risk === "LOW").length;
+}
+
+function renderHistory() {
+
+    const container = document.getElementById("history");
+
+    container.replaceChildren();
+
+    if (history.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "No transactions analyzed yet.";
+        container.appendChild(empty);
+        return;
+    }
+
+    history.forEach(item => {
+
+        const row = document.createElement("div");
+        row.className = "history-row";
+
+        const details = document.createElement("div");
+
+        const title = document.createElement("strong");
+        title.textContent = "₦" + item.amount.toLocaleString("en-NG");
+
+        const date = document.createElement("small");
+        date.textContent = item.date;
+
+        details.appendChild(title);
+        details.appendChild(date);
+
+        const badge = document.createElement("span");
+        badge.className = "badge " + item.risk.toLowerCase();
+        badge.textContent = item.risk + " · " + item.score + "/100";
+
+        row.appendChild(details);
+        row.appendChild(badge);
+
+        container.appendChild(row);
+    });
+}
+
+document.getElementById("fraudForm").addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const amount = Number(document.getElementById("amount").value);
+    const usual = Number(document.getElementById("usual").value);
+
+    if (!Number.isFinite(amount) || !Number.isFinite(usual) ||
+        amount <= 0 || usual <= 0) {
+
+        alert("Enter valid positive transaction amounts.");
+        return;
+    }
+
+    let score = 0;
+    const reasons = [];
+
+    if (amount >= usual * 5) {
+        score += 35;
+        reasons.push("Transaction is at least 5 times the usual amount (+35).");
+    } else if (amount >= usual * 2) {
+        score += 20;
+        reasons.push("Transaction is at least 2 times the usual amount (+20).");
+    }
+
+    if (document.getElementById("device").value === "yes") {
+        score += 20;
+        reasons.push("New device reported (+20).");
+    }
+
+    if (document.getElementById("location").value === "yes") {
+        score += 25;
+        reasons.push("Unusual location reported (+25).");
+    }
+
+    if (document.getElementById("failed").value === "yes") {
+        score += 20;
+        reasons.push("Repeated failed transactions reported (+20).");
+    }
+
+    score = Math.min(score, 100);
+
+    const risk = getRisk(score);
+
+    if (reasons.length === 0) {
+        reasons.push("No risk indicators were selected by the test user.");
+    }
+
+    const result = document.getElementById("result");
+
+    document.getElementById("score").textContent = score + "/100";
+
+    const riskElement = document.getElementById("risk");
+    riskElement.textContent = risk + " RISK";
+    riskElement.style.color =
+        risk === "CRITICAL" || risk === "HIGH"
+            ? "#ff7777"
+            : risk === "MEDIUM"
+                ? "#ffcf70"
+                : "#42dfa5";
+
+    const reasonsContainer = document.getElementById("reasons");
+    reasonsContainer.replaceChildren();
+
+    reasons.forEach(reason => {
+        const line = document.createElement("div");
+        line.textContent = "• " + reason;
+        reasonsContainer.appendChild(line);
+    });
+
+    result.style.display = "block";
+
+    const record = {
+        amount: amount,
+        score: score,
+        risk: risk,
+        date: new Date().toLocaleString()
+    };
+
+    history.unshift(record);
+
+    history = history.slice(0, 100);
+
+    saveHistory();
+    renderHistory();
+    updateStats();
+
+});
+
+function clearHistory() {
+
+    if (!confirm("Clear all locally stored demonstration transactions?")) {
+        return;
+    }
+
+    history = [];
+
+    saveHistory();
+    renderHistory();
+    updateStats();
+
+    document.getElementById("result").style.display = "none";
+}
+
+renderHistory();
+updateStats();
+
 </script>
 
 </body>
-  </html>
+         </html>

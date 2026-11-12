@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZENTIQ | Sensor Management</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#07111f;color:#eaf3ff;
+  font-family:Arial,sans-serif;padding:25px;
+}
+.container{max-width:850px;margin:auto}
+header{margin-bottom:30px}
+.logo{font-size:27px;font-weight:800;color:#49b8ff}
+.subtitle{color:#91a7c0;margin-top:8px}
+.card{
+  background:#101f32;border:1px solid #203c58;
+  padding:24px;border-radius:15px;margin-bottom:20px;
+}
+h2{font-size:19px;margin-bottom:18px}
+label{display:block;margin:15px 0 8px;color:#b9cce0}
+input{
+  width:100%;padding:14px;border-radius:8px;
+  border:1px solid #294660;background:#071522;
+  color:white;font-size:15px;
+}
+button{
+  background:#168de0;color:white;border:0;
+  padding:14px 20px;border-radius:8px;
+  font-weight:bold;margin-top:18px;width:100%;
+  cursor:pointer;
+}
+button:disabled{opacity:.5}
+.notice{
+  background:#192c40;border-left:3px solid #36aaff;
+  padding:13px;margin-top:15px;color:#b9cce0;
+  line-height:1.6;font-size:13px;
+}
+.status{margin-top:15px;line-height:1.6;overflow-wrap:anywhere}
+.success{color:#5ee6a8}
+.error{color:#ff8585}
+pre{
+  white-space:pre-wrap;overflow-wrap:anywhere;
+  background:#06101b;border:1px solid #294660;
+  padding:15px;border-radius:9px;margin-top:12px;
+  color:#b9e4ff;font-size:12px;line-height:1.6;
+}
+.hidden{display:none}
+a{color:#49b8ff}
+.small{font-size:12px;color:#91a7c0;margin-top:12px}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">NEXORA ZENTIQ</div>
+  <p class="subtitle">Sensor Management Centre</p>
+</header>
+
+<div class="card">
+  <h2>Register a Website Sensor</h2>
+
+  <p class="subtitle">
+    Connect a website you own or are authorised to monitor.
+  </p>
+
+  <label for="sensorName">Sensor name</label>
+  <input id="sensorName" placeholder="My Website Monitor">
+
+  <label for="websiteOrigin">Website origin</label>
+  <input id="websiteOrigin" placeholder="https://example.com">
+
+  <button id="createButton" onclick="createSensor()">
+    CREATE WEBSITE SENSOR
+  </button>
+
+  <div id="status" class="status"></div>
+</div>
+
+<div id="resultCard" class="card hidden">
+  <h2 class="success">Sensor Created</h2>
+  <p id="sensorInfo" class="subtitle"></p>
+
+  <div class="notice">
+    Save the sensor credential and installation code now.
+    The raw credential is only returned during creation.
+  </div>
+
+  <h2 style="margin-top:25px">Sensor Credential</h2>
+  <pre id="tokenOutput"></pre>
+  <button onclick="copyToken()">COPY CREDENTIAL</button>
+
+  <h2 style="margin-top:25px">Website Installation Code</h2>
+  <p class="subtitle">
+    Add this code to the website you registered.
+  </p>
+  <pre id="codeOutput"></pre>
+  <button onclick="copyCode()">COPY INSTALLATION CODE</button>
+</div>
+
+<div class="card">
+  <h2>Sensor Information</h2>
+  <p class="subtitle">
+    ZENTIQ browser sensors can report selected browser-side
+    errors and security signals. They do not independently
+    monitor servers, databases, networks, or every attack.
+  </p>
+  <div class="notice">
+    Security note: A browser-installed credential is visible
+    to website visitors. It is a restricted telemetry credential,
+    not an administrator secret. Rate limits and additional
+    abuse protections are still needed before production use.
+  </div>
+</div>
+
+<p class="small">
+  <a href="/">Return to ZENTIQ Dashboard</a>
+</p>
+
+</div>
+
+<script>
+const SUPABASE_URL =
+  "https://crwxixfmwirizsvhhfnn.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_1HV9-OUqv6R6ziKTynVOMA_6GX_eTv3";
+
+const supabaseClient =
+  window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let generatedToken = "";
+let generatedCode = "";
+
+async function createSensor() {
+  const button = document.getElementById("createButton");
+  const status = document.getElementById("status");
+  const name = document.getElementById("sensorName").value.trim();
+  const originInput =
+    document.getElementById("websiteOrigin").value.trim();
+
+  status.textContent = "";
+  status.className = "status";
+
+  if (!name || !originInput) {
+    status.textContent = "Enter both the sensor name and website origin.";
+    status.classList.add("error");
+    return;
+  }
+
+  let origin;
+
+  try {
+    const parsed = new URL(originInput);
+
+    if (
+      parsed.protocol !== "https:" &&
+      parsed.hostname !== "localhost" &&
+      parsed.hostname !== "127.0.0.1"
+    ) {
+      throw new Error("Use HTTPS for your website.");
+    }
+
+    if (
+      parsed.username || parsed.password ||
+      parsed.pathname !== "/" || parsed.search || parsed.hash
+    ) {
+      throw new Error("Enter only the website origin, without a path.");
+    }
+
+    origin = parsed.origin;
+  } catch (error) {
+    status.textContent = error.message || "Enter a valid website URL.";
+    status.classList.add("error");
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "CREATING SENSOR...";
+
+  try {
+    const { data: sessionData, error: sessionError } =
+      await supabaseClient.auth.getSession();
+
+    if (sessionError) throw sessionError;
+
+    if (!sessionData.session) {
+      throw new Error(
+        "You are not signed in. Sign in through the ZENTIQ Dashboard first."
+      );
+    }
+
+    const { data, error } =
+      await supabaseClient.functions.invoke(
+        "zentiq-create-sensor",
+        {
+          body: {
+            name: name,
+            origin: origin
+          }
+        }
+      );
+
+    if (error) throw error;
+
+    if (!data || data.error) {
+      throw new Error(data?.error || "Sensor creation failed.");
+    }
+
+    generatedToken = data.sensor_token || data.token || "";
+
+    if (!generatedToken) {
+      throw new Error(
+        "The server did not return a sensor credential. Check the function response."
+      );
+    }
+
+    generatedCode = makeInstallationCode(generatedToken);
+
+    document.getElementById("sensorInfo").textContent =
+      name + " — " + origin;
+
+    document.getElementById("tokenOutput").textContent =
+      generatedToken;
+
+    document.getElementById("codeOutput").textContent =
+      generatedCode;
+
+    document.getElementById("resultCard").classList.remove("hidden");
+
+    status.textContent = "Sensor successfully created.";
+    status.classList.add("success");
+
+  } catch (error) {
+    console.error(error);
+    status.textContent =
+      error.message || "Something went wrong. Check your function deployment.";
+    status.classList.add("error");
+  }
+
+  button.disabled = false;
+  button.textContent = "CREATE WEBSITE SENSOR";
+}
+
+function makeInstallationCode(token) {
+  return `<script>
+(function () {
+  const ZENTIQ_TOKEN = ${JSON.stringify(token)};
+  const ZENTIQ_ENDPOINT =
+    "https://crwxixfmwirizsvhhfnn.supabase.co/functions/v1/zentiq-ingest";
+
+  function report(eventType, attributes) {
+    fetch(ZENTIQ_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-zentiq-token": ZENTIQ_TOKEN
+      },
+      body: JSON.stringify({
+        event_type: eventType,
+        attributes: attributes
+      }),
+      keepalive: true
+    }).catch(function () {});
+  }
+
+  window.addEventListener("error", function (event) {
+    report("page_error", {
+      category: "javascript",
+      message: "A browser JavaScript error occurred."
+    });
+  });
+
+  window.addEventListener("unhandledrejection", function () {
+    report("page_error", {
+      category: "promise",
+      message: "An unhandled browser promise rejection occurred."
+    });
+  });
+
+  document.addEventListener("securitypolicyviolation", function () {
+    report("csp_violation", {
+      category: "content_security_policy",
+      message: "A browser content security policy violation occurred."
+    });
+  });
+})();
+<\/script>`;
+}
+
+async function copyToken() {
+  if (!generatedToken) return;
+  await navigator.clipboard.writeText(generatedToken);
+  alert("Credential copied.");
+}
+
+async function copyCode() {
+  if (!generatedCode) return;
+  await navigator.clipboard.writeText(generatedCode);
+  alert("Installation code copied.");
+}
+</script>
+
+</body>
+</html>
